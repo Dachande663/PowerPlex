@@ -1,0 +1,23 @@
+{
+  "name": "plex8",
+  "version": "0.8.0",
+  "description": "Plex front-end app",
+  "author": "Luke Lanchester <luke@lukelanchester.com> (http://hybridlogic.co.uk)",
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.1.21",
+    "babel-loader": "^6.1.0",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-react": "^6.1.18",
+    "brfs": "^1.4.1",
+    "jsx-loader": "^0.13.2",
+    "pourover": "^1.2.0",
+    "react": "^0.14.2",
+    "react-dom": "^0.14.2",
+    "react-lazy-render": "^0.3.0",
+    "react-masonry-component": "^2.0.0",
+    "transform-loader": "^0.2.3",
+    "velocity-react": "^1.1.1",
+    "webpack": "^1.12.6"
+  }
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Plex8</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+
+<div class="container">
+	<div class="page-header">
+		<h1>Explorer</h1>
+	</div>
+	<div id="library">
+		<p>Loading Plex Library...</p>
+	</div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.2/react.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.2/react-dom.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.js"></script> -->
+
+
+<script src="/apps/explorer/explorer.js"></script>
+
+
+<script type="text/babel">
+
+/*
+'use strict';
+
+
+var PlexItem = React.createClass({
+	render: function() {
+		return (
+			<div>
+				<h2>{this.props.item.Title}</h2>
+			</div>
+		);
+	}
+});
+
+
+var PlexItems = React.createClass({
+	render: function() {
+		var nodes = this.props.items.map(function(item){
+			return (<PlexItem key={item.Key} item={item}/>);
+		});
+		return (<div>{nodes}</div>);
+	}
+});
+
+
+var PlexLibrary = React.createClass({
+	loadItems: function() {
+		var self = this;
+		jQuery.getJSON("/assets/test/data.json", function(resp){
+			var items = [];
+			$.each(resp, function(el, item){
+				items.push(item);
+			});
+			self.setState({ items: items });
+		});
+	},
+	getInitialState: function() {
+		return {items: []};
+	},
+	componentDidMount: function() {
+		this.loadItems();
+	},
+	render: function() {
+		return (
+			<div className="row">
+
+				<div className="col-md-3">
+					<div className="panel panel-default">
+						<div className="panel-heading">Filters</div>
+						<div className="panel-body">
+							Filters
+						</div>
+					</div>
+				</div>
+
+				<div className="col-md-9">
+					<div className="panel panel-default">
+						<div className="panel-heading">Library</div>
+						<div className="panel-body">
+							<PlexItems items={this.state.items} />
+						</div>
+					</div>
+				</div>
+
+			</div>
+		);
+	}
+});
+
+
+ReactDOM.render(<PlexLibrary data="/data.json" />, document.getElementById('library'));
+*/
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
