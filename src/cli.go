@@ -29,10 +29,12 @@ func startCli() {
 			Value: 32400,
 			Usage: "Plex Media server port",
 		},
+		cli.StringFlag{
+			Name:  "build-dir",
+			Value: "./data",
+			Usage: "Data output directory",
+		},
 	}
-
-	// Default to opening the web interface
-	// app.Action = webCommand
 
 	app.Commands = []cli.Command{
 		{
