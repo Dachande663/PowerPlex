@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 )
 
+// Start a HTTP webserver
 func startHttp() {
 
 	router := httprouter.New()
@@ -23,19 +24,23 @@ func startHttp() {
 
 }
 
+// Get system homepage
 func getIndexHttp(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	serveHttpAsset(w, "resources/index.html")
 }
 
+// Get an encoded asset
 func getAssetHttp(w http.ResponseWriter, r *http.Request, p httprouter.Params) {
 	serveHttpAsset(w, string("resources/assets")+p.ByName("file"))
 }
 
+// 404 page
 func get404Http(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(404)
 	serveHttpAsset(w, "resources/404.html")
 }
 
+// Serve an http asset encoded into the app
 func serveHttpAsset(w http.ResponseWriter, file string) {
 
 	data, err := Asset(file)

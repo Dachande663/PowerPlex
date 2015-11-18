@@ -10,6 +10,7 @@ import (
 	"runtime"
 )
 
+// Launch the command-line interface
 func startCli() {
 
 	app := cli.NewApp()
@@ -45,6 +46,7 @@ func startCli() {
 
 }
 
+// Begin the exporter
 func exportCommand(c *cli.Context) {
 
 	exporter := makeExporter()
@@ -68,6 +70,7 @@ func exportCommand(c *cli.Context) {
 
 }
 
+// Begin the web interface
 func webCommand(c *cli.Context) {
 
 	if false {

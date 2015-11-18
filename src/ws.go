@@ -10,22 +10,21 @@ import (
 	"path/filepath"
 )
 
+type wsMessage struct {
+	Code   int    `json:"code"`
+	Action string `json:"action"`
+	Data   string `json:"data"`
+}
+
 var wsUpgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
-}
-
-type wsMessage struct {
-	Action string `json:"action"`
-	Source string `json:"source"`
-	Data   string `json:"data"`
 }
 
 func startWebsocket(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 
 	ws, err := wsUpgrader.Upgrade(w, r, nil)
 	if err != nil {
-		println("shit1")
 		http.Error(w, "Unable to connect to system", 500)
 		return
 	}
@@ -42,6 +41,7 @@ func startWebsocket(w http.ResponseWriter, r *http.Request, _ httprouter.Params)
 
 }
 
+// Handle sending messages to the front-end via websockets
 func wsWriter(ws *websocket.Conn, msgs chan wsMessage) {
 
 	for {
@@ -51,6 +51,7 @@ func wsWriter(ws *websocket.Conn, msgs chan wsMessage) {
 
 }
 
+// Handle reading messages sent over websockets from the front-end
 func wsReader(ws *websocket.Conn, msgs chan wsMessage) {
 
 	for {
@@ -58,15 +59,13 @@ func wsReader(ws *websocket.Conn, msgs chan wsMessage) {
 		msg := wsMessage{}
 		err := ws.ReadJSON(&msg)
 		if err != nil {
-			println("ReadJSON err:", err.Error())
-			return
+			return // abort reader
 		}
 
 		switch msg.Action {
 		case "export":
 			go wsExportCommand(msgs)
 		default:
-			msg.Source = "server"
 			msgs <- msg
 		}
 
@@ -74,29 +73,28 @@ func wsReader(ws *websocket.Conn, msgs chan wsMessage) {
 
 }
 
+// Handle front-end requesting an export
 func wsExportCommand(output chan wsMessage) {
 
-	output <- wsMessage{Action: "log", Source: "server", Data: "start"}
+	output <- wsMessage{Code: 200, Action: "log", Data: "start"}
 
 	exporter := makeExporter()
 
 	exporter.Reporter = func(msg string) {
-		output <- wsMessage{Action: "log", Source: "server", Data: msg}
+		output <- wsMessage{Code: 200, Action: "log", Data: msg}
 	}
 
 	library := exporter.Export()
 	j, _ := json.MarshalIndent(library, "", "  ")
 
-	output <- wsMessage{Action: "log", Source: "server", Data: "end"}
+	output <- wsMessage{Code: 200, Action: "log", Data: "end"}
 
 	cwd, _ := os.Getwd()
 	dir, _ := filepath.Abs(cwd)
 	file := dir + "/data.json"
 
-	println(file)
-
 	ioutil.WriteFile(file, j, 0644)
 
-	output <- wsMessage{Action: "log", Source: "server", Data: file}
+	output <- wsMessage{Code: 200, Action: "log", Data: file}
 
 }

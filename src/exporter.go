@@ -19,6 +19,7 @@ type exporterData struct {
 	data map[string]interface{}
 }
 
+// Create an exporter to convert Plex to JSON
 func makeExporter() exporter {
 
 	return exporter{
@@ -31,6 +32,7 @@ func makeExporter() exporter {
 
 }
 
+// Begin the exporter
 func (e *exporter) Export() map[string]interface{} {
 
 	e.Reporter("Starting exporter...")

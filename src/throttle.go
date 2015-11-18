@@ -6,9 +6,10 @@ import (
 	"time"
 )
 
-const maxConcurrency = 10
+const httpMaxConcurrency = 10
+const httpSleepTimer = time.Millisecond * 250
 
-var httpThrottle = make(chan bool, maxConcurrency)
+var httpThrottle = make(chan bool, httpMaxConcurrency)
 
 // Make a request with max concurrency
 func makeRequest(url string) ([]byte, error) {
@@ -17,7 +18,7 @@ func makeRequest(url string) ([]byte, error) {
 
 	resp, err := makeActualRequest(url)
 
-	time.Sleep(time.Second)
+	time.Sleep(httpSleepTimer) // arbitrary delay
 
 	<-httpThrottle // release slot
 
@@ -25,10 +26,8 @@ func makeRequest(url string) ([]byte, error) {
 
 }
 
-// Make an API request
+// Actually make the API request
 func makeActualRequest(url string) ([]byte, error) {
-
-	// time.Sleep(time.Second)
 
 	resp, err := http.Get(url)
 	if err != nil {
