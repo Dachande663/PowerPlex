@@ -1,22 +1,18 @@
 jQuery(document).ready(function($){
 
+	var wsUri = 'ws://localhost:' + window.location.port + '/ws';
+	var ws = new WebSocket(wsUri);
+	var $output = $('#output');
+
 	$('.js-btn').click(function(e){
 		e.preventDefault();
 		var action = $(this).attr('data-action');
 		wsSend({ action: action, source: 'client' });
 	});
 
-
-	var wsUri = 'ws://localhost:8000/ws';
-	// var wsUri = 'ws://echo.websocket.org';
-
-	var $output = $('#output');
-
-	var ws = new WebSocket(wsUri);
-
 	ws.onopen = function(evt) {
 		wsLog('<div class="alert alert-danger"><strong>CONNECTED</strong></div>');
-		wsSend({ action: 'init', source: 'client' });
+		wsSend({ code: 200, action: 'init', data: 'hello, world' });
 	};
 
 	ws.onclose = function(evt) {
@@ -25,7 +21,6 @@ jQuery(document).ready(function($){
 
 	ws.onmessage = function(evt) {
 		wsLog('<div class="alert alert-success"><strong>RESPONSE:</strong> ' + evt.data + '</div>');
-		// ws.close();
 	};
 
 	ws.onerror = function(evt) {
@@ -41,6 +36,5 @@ jQuery(document).ready(function($){
 	function wsLog(msg) {
 		$output.append($('<div/>').html(msg));
 	}
-
 
 });

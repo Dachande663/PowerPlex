@@ -14,20 +14,25 @@ import (
 func startCli() {
 
 	app := cli.NewApp()
-	app.Name = "plex"
-	app.Usage = "Explore your Plex library"
+	app.Name = "powerplex"
+	app.Usage = "Unlock the power of your Plex library"
 	app.Version = "0.1.0 - Keyser Soze"
-	app.EnableBashCompletion = true
 
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name:  "plex-url",
-			Value: "http://localhost:32400",
-			Usage: "The URL to your Plex Media server",
+			Name:  "plex-host",
+			Value: "localhost",
+			Usage: "Plex Media server hostname",
+		},
+		cli.IntFlag{
+			Name:  "plex-port",
+			Value: 32400,
+			Usage: "Plex Media server port",
 		},
 	}
 
-	app.Action = webCommand
+	// Default to opening the web interface
+	// app.Action = webCommand
 
 	app.Commands = []cli.Command{
 		{
@@ -39,6 +44,17 @@ func startCli() {
 			Name:   "web",
 			Usage:  "Launch the web interface",
 			Action: webCommand,
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:  "disable-launch",
+					Usage: "Disable opening a web browser on start",
+				},
+				cli.IntFlag{
+					Name:  "app-port",
+					Value: 32432,
+					Usage: "Local PowerPlex port",
+				},
+			},
 		},
 	}
 
@@ -73,16 +89,18 @@ func exportCommand(c *cli.Context) {
 // Begin the web interface
 func webCommand(c *cli.Context) {
 
-	if false {
+	url := "http://localhost:" + c.String("app-port")
+
+	if !c.Bool("disable-launch") {
 		switch runtime.GOOS {
 		case "linux":
-			exec.Command("xdg-open", "http://localhost:8000").Start()
+			exec.Command("xdg-open", url).Start()
 		case "windows", "darwin":
-			exec.Command("open", "http://localhost:8000").Start()
+			exec.Command("open", url).Start()
 		}
 	}
 
-	println("Now listening on localhost:8000")
-	startHttp()
+	println("Now listening on " + url)
+	startHttp(":" + c.String("app-port"))
 
 }

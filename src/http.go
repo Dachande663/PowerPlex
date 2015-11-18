@@ -9,7 +9,7 @@ import (
 )
 
 // Start a HTTP webserver
-func startHttp() {
+func startHttp(addr string) {
 
 	router := httprouter.New()
 	router.NotFound = get404Http
@@ -20,7 +20,7 @@ func startHttp() {
 	router.ServeFiles("/apps/*filepath", http.Dir("public"))
 	router.GET("/ws", startWebsocket)
 
-	log.Fatal(http.ListenAndServe(":8000", router))
+	log.Fatal(http.ListenAndServe(addr, router))
 
 }
 
